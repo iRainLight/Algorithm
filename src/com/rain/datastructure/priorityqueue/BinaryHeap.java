@@ -15,7 +15,7 @@ public class BinaryHeap<T extends Comparable<T>>{
 
 	// Construct a priority queue with an inital capacity
 	public BinaryHeap(int sz){
-		head = new ArrayList<>(sz);
+		heap = new ArrayList<>(sz);
 	}
 
 	// Construct a priority queue using heapify in O(n) time
@@ -126,12 +126,12 @@ public class BinaryHeap<T extends Comparable<T>>{
 
 			// Find which is smaller left or right
 			// If right is smaller set smallest to be right
-			if(right < heapSize && less(right, left) 
+			if(right < heapSize && less(right, left)) 
 				smallest = right;
 
 			// Stop if we're outside the bounds of the tree 
 			// or stop early if we cannot sink k anymore
-			if(left > heapSize || less(k, smallest)
+			if(left > heapSize || less(k, smallest))
 				break;
 
 			// Move down the tree following the smallest node
@@ -181,8 +181,34 @@ public class BinaryHeap<T extends Comparable<T>>{
 		sink(i);
 
 		// If sinking did not work try swimming
-		if(heap.get(i).euqls(elem)	)	swim(i);
+		if(heap.get(i).equals(elem)	)	swim(i);
 		return remove_data;
 	}
 
+	// Recursively checks if this heap is a min heap
+	// This method is just for testing purpose to make 
+	// sure the heap invariant is still being maintained
+	// Called this method with k=0 to start at the root
+	public boolean isMinHeap(int k){
+		// If we are outside the bounds of the heap return true
+		int heapSize = size();
+		if(k >= heapSize) return true;
+
+		int left = 2 * k + 1;
+		int right = 2 * k + 2;
+	
+		// Make sure that current node k is less than
+		// both of its children left, and right if they exist
+		// return false otherwise to indicade an invalid heap
+		if(left < heapSize && !less(k, left)) return false;
+		if(right < heapSize && !less(k, right)) return false;
+	
+		// Recurse on both children to make sure they're alse valid heaps
+		return isMinHeap(left) && isMinHeap(right);
+	}
+
+	@Override
+	public String toString(){
+		return heap.toString();
+	}
 }
