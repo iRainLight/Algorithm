@@ -31,7 +31,7 @@ public class BinarySearchTree<T extends Comparable<T>>{
 
     // Add an element to this binary tree. Return true
     // if we successfully perform an insertion
-    public boolean add(T elem)
+    public boolean add(T elem) {
         if(countain(elem)){
             return false;
         } else {
